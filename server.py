@@ -10,7 +10,7 @@ load_dotenv()
 # Set up Google Cloud authentication
 GOOGLE_CREDS_PATH = os.getenv(
     "GOOGLE_APPLICATION_CREDENTIALS",
-    "/opt/render/project/secrets/my-service-account.json"
+    "/etc/secrets/my-service-account.json"
 )
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_CREDS_PATH
