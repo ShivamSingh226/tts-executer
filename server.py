@@ -43,7 +43,8 @@ async def handle_client(websocket):
         await websocket.send(audio_bytes)
 
 async def main():
-    async with websockets.serve(handle_client, "localhost", 8765, max_size=None,
+    PORT = int(os.getenv("PORT", 8765))
+    async with websockets.serve(handle_client, "0.0.0.0", PORT, max_size=None,
     ping_interval=30,
     ping_timeout=30
 ):
