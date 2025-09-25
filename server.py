@@ -1,6 +1,7 @@
 import asyncio
 import websockets
 import os
+from aiohttp import web, WSMsgType
 from dotenv import load_dotenv
 from google.cloud import texttospeech
 
@@ -47,14 +48,36 @@ async def handle_client(websocket):
         # Send audio bytes back to client
         await websocket.send(audio_bytes)
 
+
+async def websocket_handler(request):
+    ws = web.WebSocketResponse()
+    await ws.prepare(request)
+
+    async for msg in ws:
+        if msg.type == web.WSMsgType.TEXT:
+            audio_bytes = synthesize_speech(msg.data)
+            await ws.send_bytes(audio_bytes)
+
+    return ws
+
+async def http_handler(request):
+    return web.Response(text="WebSocket TTS server is running.")
+
+
 async def main():
+    app = web.Application()
+    app.router.add_get("/", http_handler)       # HTTP root handler
+    app.router.add_get("/ws", websocket_handler)  # WebSocket handler
+
     PORT = int(os.getenv("PORT", 8765))
-    async with websockets.serve(handle_client, "0.0.0.0", PORT, max_size=None,
-    ping_interval=30,
-    ping_timeout=30
-):
-        print("Server running on ws://localhost:8765")
-        await asyncio.Future()  # Run forever
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", PORT)
+    await site.start()
+
+    print(f"Server running on http://0.0.0.0:{PORT} and ws://0.0.0.0:{PORT}/ws")
+    await asyncio.Future()  # Run forever
 
 if __name__ == "__main__":
     asyncio.run(main())
+

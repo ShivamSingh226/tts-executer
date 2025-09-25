@@ -5,7 +5,7 @@ import sounddevice as sd
 import soundfile as sf
 
 async def send_and_play():
-    uri = "ws://localhost:8765"
+    uri = "ws://localhost:8765/ws"
     async with websockets.connect(uri) as websocket:
         while True:
             # 1️⃣ User inputs text
