@@ -8,7 +8,12 @@ from google.cloud import texttospeech
 load_dotenv()
 
 # Set up Google Cloud authentication
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+GOOGLE_CREDS_PATH = os.getenv(
+    "GOOGLE_APPLICATION_CREDENTIALS",
+    "/opt/render/project/secrets/my-service-account.json"
+)
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_CREDS_PATH
 
 # Initialize Google Cloud TTS client
 tts_client = texttospeech.TextToSpeechClient()
