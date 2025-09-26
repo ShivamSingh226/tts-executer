@@ -24,10 +24,10 @@ def synthesize_speech(text):
         input_text = texttospeech.SynthesisInput(ssml=text)
     else:
         input_text = texttospeech.SynthesisInput(text=text)
-        
+
     voice = texttospeech.VoiceSelectionParams(
-        language_code="en-US",
-        name="en-US-Wavenet-D"  # You can change this to other supported voices
+        language_code="en-IN",
+        name="en-IN-Chirp3-HD-Charon"
     )
     audio_config = texttospeech.AudioConfig(
         audio_encoding=texttospeech.AudioEncoding.LINEAR16,
