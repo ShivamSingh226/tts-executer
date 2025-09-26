@@ -20,7 +20,11 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_CREDS_PATH
 tts_client = texttospeech.TextToSpeechClient()
 
 def synthesize_speech(text):
-    input_text = texttospeech.SynthesisInput(text=text)
+    if text.strip().startswith("<speak>"):
+        input_text = texttospeech.SynthesisInput(ssml=text)
+    else:
+        input_text = texttospeech.SynthesisInput(text=text)
+        
     voice = texttospeech.VoiceSelectionParams(
         language_code="en-US",
         name="en-US-Wavenet-D"  # You can change this to other supported voices
