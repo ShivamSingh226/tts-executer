@@ -27,7 +27,7 @@ def synthesize_speech(text):
 
     voice = texttospeech.VoiceSelectionParams(
         language_code="en-IN",
-        name="en-IN-Chirp3-HD-Charon"
+        name="en-IN-Wavenet-D",
     )
     audio_config = texttospeech.AudioConfig(
         audio_encoding=texttospeech.AudioEncoding.LINEAR16,
